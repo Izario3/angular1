@@ -2,7 +2,7 @@
 <productos>
     <producto>
         <id>1</id>
-        <nombre>HOLA</nombre>
+        <nombre>Telefono</nombre>
         <precio>600</precio>
         <imagen>assets\th (1).jpg</imagen>
         <descripcion>Telefono del año 2000.</descripcion>
