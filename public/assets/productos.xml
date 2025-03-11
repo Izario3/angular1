@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<productos>
+    <producto>
+        <id>1</id>
+        <nombre>Telefono</nombre>
+        <precio>600</precio>
+        <imagen>assets\th (1).jpg</imagen>
+        <descripcion>Telefono del año 2000.</descripcion>
+    </producto>
+    <producto>
+        <id>2</id>
+        <nombre>Tablet</nombre>
+        <precio>499</precio>
+        <imagen>assets\th (2).jpg</imagen>
+        <descripcion>Tablet de los años 2005</descripcion>
+    </producto>
+    <producto>
+        <id>3</id>
+        <nombre>Computadora</nombre>
+        <precio>459</precio>
+        <imagen>assets\th.jpg</imagen>
+        <descripcion>Computadora de ultima generación.</descripcion>
+    </producto>
+</productos>
