@@ -1,0 +1,55 @@
+<h2>Inventario de Productos</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Precio</th>
+      <th>Imagen</th>
+      <th>Descripción</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let producto of productos">
+      <td>{{ producto.id }}</td>
+      <td>{{ producto.nombre }}</td>
+      <td>${{ producto.precio }}</td>
+      <td>
+        <img [src]="producto.imagen" width="50" *ngIf="producto.imagen; else noImage">
+        <ng-template #noImage>No image</ng-template>
+      </td>
+      <td>{{ producto.descripcion || 'Sin descripción' }}</td>
+      <td>
+        <button (click)="editarProducto(producto)">Editar</button>
+        <button (click)="eliminarProducto(producto.id)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Formulario de Edición -->
+<div *ngIf="productoEditando">
+  <h3>Editar Producto</h3>
+  <form (ngSubmit)="guardarEdicion()">
+    <input [(ngModel)]="productoEditando.nombre" name="nombre" placeholder="Nombre" required>
+    <input [(ngModel)]="productoEditando.precio" name="precio" placeholder="Precio" type="number" required>
+    <input [(ngModel)]="productoEditando.imagen" name="imagen" placeholder="URL de Imagen">
+    <input [(ngModel)]="productoEditando.descripcion" name="descripcion" placeholder="Descripción">
+    <button type="submit">Guardar Cambios</button>
+    <button type="button" (click)="productoEditando = null">Cancelar</button>
+  </form>
+</div>
+
+<!-- Formulario de Agregar Producto -->
+<h3>Agregar Nuevo Producto</h3>
+<form #productoForm="ngForm" (ngSubmit)="agregarProducto(nombre.value, precio.value, imagen.value, descripcion.value)">
+    <input #nombre name="nombre" placeholder="Nombre" required>
+    <input #precio name="precio" type="number" placeholder="Precio" required>
+    <input #imagen name="imagen" placeholder="URL de Imagen">
+    <input #descripcion name="descripcion" placeholder="Descripción">
+    <button type="submit">Agregar Producto</button>
+  </form>
+  
+  

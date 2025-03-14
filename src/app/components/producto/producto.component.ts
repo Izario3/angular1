@@ -38,5 +38,8 @@ alert(`${producto.nombre} ha sido agregado al carrito`);
 irAlCarrito(){
   this.router.navigate(['/carrito']);
 }
+irAlInventario() {
+  this.router.navigate(['/inventario']);
+}
 
 }
