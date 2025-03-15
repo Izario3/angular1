@@ -42,7 +42,7 @@ export class CarritoService {
     xml += `</info>\n`;
     xml += `<productos>\n`;
 
-    let subtotal = 0;
+    let subtotal = 0;0.0
 
     for (const id in productosAgrupados) {
         const producto = productosAgrupados[id];

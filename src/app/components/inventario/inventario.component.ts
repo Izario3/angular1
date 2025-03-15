@@ -29,12 +29,13 @@ export class InventarioComponent implements OnInit {
         nombre: prod.getElementsByTagName('nombre')[0].textContent || '',
         precio: Number(prod.getElementsByTagName('precio')[0].textContent),
         imagen: prod.getElementsByTagName('imagen')[0].textContent || '',
-        descripcion: prod.getElementsByTagName('descripcion')[0]?.textContent || ''
+        descripcion: prod.getElementsByTagName('descripcion')[0]?.textContent || '',
+        cantidad: prod.getElementsByTagName('cantidad')[0]?.textContent || '',
       }));
     });
   }
 
-  agregarProducto(nombre: string, precio: string, imagen: string, descripcion: string) {
+  agregarProducto(nombre: string, precio: string, imagen: string, descripcion: string, cantidad: string) {
     // Convertir precio a número
     const precioNumero = parseFloat(precio);
 
@@ -43,7 +44,8 @@ export class InventarioComponent implements OnInit {
       nombre,
       precio: precioNumero,
       imagen,
-      descripcion
+      descripcion,
+      cantidad
     };
 
     this.productos.push(nuevoProducto);
@@ -83,6 +85,7 @@ export class InventarioComponent implements OnInit {
           <precio>${prod.precio}</precio>
           <imagen>${prod.imagen}</imagen>
           <descripcion>${prod.descripcion}</descripcion>
+          <cantidad>${prod.cantidad}</cantidad>
         </producto>`;
     }).join('');
 

@@ -8,6 +8,7 @@
       <th>Precio</th>
       <th>Imagen</th>
       <th>Descripción</th>
+      <th>Cantidad</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -21,6 +22,7 @@
         <ng-template #noImage>No image</ng-template>
       </td>
       <td>{{ producto.descripcion || 'Sin descripción' }}</td>
+      <td>{{ producto.cantidad }}</td>
       <td>
         <button (click)="editarProducto(producto)">Editar</button>
         <button (click)="eliminarProducto(producto.id)">Eliminar</button>
@@ -37,6 +39,7 @@
     <input [(ngModel)]="productoEditando.precio" name="precio" placeholder="Precio" type="number" required>
     <input [(ngModel)]="productoEditando.imagen" name="imagen" placeholder="URL de Imagen">
     <input [(ngModel)]="productoEditando.descripcion" name="descripcion" placeholder="Descripción">
+    <input [(ngModel)]="productoEditando.cantidad" name="cantidad" placeholder="Cantidad" type="number" required>
     <button type="submit">Guardar Cambios</button>
     <button type="button" (click)="productoEditando = null">Cancelar</button>
   </form>
@@ -44,11 +47,12 @@
 
 <!-- Formulario de Agregar Producto -->
 <h3>Agregar Nuevo Producto</h3>
-<form #productoForm="ngForm" (ngSubmit)="agregarProducto(nombre.value, precio.value, imagen.value, descripcion.value)">
+<form #productoForm="ngForm" (ngSubmit)="agregarProducto(nombre.value, precio.value, imagen.value, descripcion.value, cantidad.value)">
     <input #nombre name="nombre" placeholder="Nombre" required>
     <input #precio name="precio" type="number" placeholder="Precio" required>
     <input #imagen name="imagen" placeholder="URL de Imagen">
     <input #descripcion name="descripcion" placeholder="Descripción">
+    <input #cantidad name="cantidad" type ="number" placeholder="Cantidad" required>
     <button type="submit">Agregar Producto</button>
   </form>
   

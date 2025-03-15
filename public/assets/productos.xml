@@ -6,6 +6,7 @@
         <precio>600</precio>
         <imagen>assets\th (1).jpg</imagen>
         <descripcion>Telefono del año 2000.</descripcion>
+        <cantidad>5</cantidad>
     </producto>
     <producto>
         <id>2</id>
@@ -13,6 +14,7 @@
         <precio>499</precio>
         <imagen>assets\th (2).jpg</imagen>
         <descripcion>Tablet de los años 2005</descripcion>
+        <cantidad>5</cantidad>
     </producto>
     <producto>
         <id>3</id>
@@ -20,5 +22,6 @@
         <precio>459</precio>
         <imagen>assets\th.jpg</imagen>
         <descripcion>Computadora de ultima generación.</descripcion>
+        <cantidad>5</cantidad>
     </producto>
 </productos>
