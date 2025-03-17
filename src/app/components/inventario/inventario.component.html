@@ -1,5 +1,10 @@
 <h2>Inventario de Productos</h2>
 
+<!-- Importar un archivo XML -->
+<button (click)="irAProductos()">Ir a Productos</button>
+
+<input type="file" accept=".xml" (change)="importarXML($event)">
+
 <table>
   <thead>
     <tr>
@@ -54,6 +59,4 @@
     <input #descripcion name="descripcion" placeholder="Descripción">
     <input #cantidad name="cantidad" type ="number" placeholder="Cantidad" required>
     <button type="submit">Agregar Producto</button>
-  </form>
-  
-  
+</form>

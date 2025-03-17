@@ -1,11 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { InventarioService } from '../../services/inventario.service';
-import { Producto } from '../../models/producto';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { InventarioService } from '../../services/inventario.service';
+interface Producto {
+  id: number;
+  nombre: string;
+  precio: number;
+  imagen: string;
+  descripcion: string;
+  cantidad: number;
+}
 
 @Component({
   selector: 'app-inventario',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './inventario.component.html',
   styleUrls: ['./inventario.component.css']
@@ -14,42 +23,67 @@ export class InventarioComponent implements OnInit {
   productos: Producto[] = [];
   productoEditando: Producto | null = null;
 
-  constructor(private inventarioService: InventarioService) {}
-
   ngOnInit(): void {
-    this.cargarProductos();
+    this.cargarInventarioInicial();
+  }
+  constructor(private router: Router) {} // Inyectar el router correctamente
+
+  irAProductos() {
+    this.router.navigate(['/producto']); // Asegúrate de que '/productos' es una ruta válida
   }
 
-  cargarProductos() {
-    this.inventarioService.obtenerProductos().subscribe(xmlString => {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
-      this.productos = Array.from(xmlDoc.getElementsByTagName('producto')).map(prod => ({
-        id: Number(prod.getElementsByTagName('id')[0].textContent),
-        nombre: prod.getElementsByTagName('nombre')[0].textContent || '',
-        precio: Number(prod.getElementsByTagName('precio')[0].textContent),
-        imagen: prod.getElementsByTagName('imagen')[0].textContent || '',
-        descripcion: prod.getElementsByTagName('descripcion')[0]?.textContent || '',
-        cantidad: prod.getElementsByTagName('cantidad')[0]?.textContent || '',
-      }));
-    });
+cargarInventarioInicial() {
+  fetch('assets/productos.xml') // Ruta corregida
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log('XML Cargado:', data); // Para depuración
+      this.procesarXML(data);
+    })
+    .catch(error => console.error('Error cargando el XML inicial:', error));
+}
+
+  importarXML(event: any) {
+    const archivo = event.target.files[0];
+    if (!archivo) return;
+
+    const lector = new FileReader();
+    lector.onload = (e: any) => {
+      const xmlString = e.target.result;
+      this.procesarXML(xmlString);
+    };
+    lector.readAsText(archivo);
+  }
+
+  procesarXML(xmlString: string) {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+    this.productos = Array.from(xmlDoc.getElementsByTagName('producto')).map(prod => ({
+      id: Number(prod.getElementsByTagName('id')[0].textContent),
+      nombre: prod.getElementsByTagName('nombre')[0].textContent || '',
+      precio: Number(prod.getElementsByTagName('precio')[0].textContent),
+      imagen: prod.getElementsByTagName('imagen')[0]?.textContent || '',
+      descripcion: prod.getElementsByTagName('descripcion')[0]?.textContent || '',
+      cantidad: Number(prod.getElementsByTagName('cantidad')[0]?.textContent || '0')
+    }));
   }
 
   agregarProducto(nombre: string, precio: string, imagen: string, descripcion: string, cantidad: string) {
-    // Convertir precio a número
-    const precioNumero = parseFloat(precio);
-
     const nuevoProducto: Producto = {
       id: this.productos.length + 1,
       nombre,
-      precio: precioNumero,
+      precio: parseFloat(precio),
       imagen,
       descripcion,
-      cantidad
+      cantidad: parseInt(cantidad)
     };
 
     this.productos.push(nuevoProducto);
-    this.generarXML(); // Generar el XML y permitir su descarga
+    this.generarXML();
   }
 
   editarProducto(producto: Producto) {
@@ -62,45 +96,36 @@ export class InventarioComponent implements OnInit {
       if (index !== -1) {
         this.productos[index] = this.productoEditando;
       }
-      this.generarXML(); // Generar el XML y permitir su descarga
+      this.generarXML();
       this.productoEditando = null;
     }
   }
 
   eliminarProducto(id: number) {
-    const index = this.productos.findIndex(p => p.id === id);
-    if (index !== -1) {
-      this.productos.splice(index, 1);
-    }
-    this.generarXML(); // Generar el XML y permitir su descarga
+    this.productos = this.productos.filter(p => p.id !== id);
+    this.generarXML();
   }
 
-  // Generar XML y permitir su descarga
   generarXML() {
-    const xmlProductos = this.productos.map(prod => {
-      return `
-        <producto>
-          <id>${prod.id}</id>
-          <nombre>${prod.nombre}</nombre>
-          <precio>${prod.precio}</precio>
-          <imagen>${prod.imagen}</imagen>
-          <descripcion>${prod.descripcion}</descripcion>
-          <cantidad>${prod.cantidad}</cantidad>
-        </producto>`;
-    }).join('');
+    const xmlProductos = this.productos.map(prod => `
+      <producto>
+        <id>${prod.id}</id>
+        <nombre>${prod.nombre}</nombre>
+        <precio>${prod.precio}</precio>
+        <imagen>${prod.imagen}</imagen>
+        <descripcion>${prod.descripcion}</descripcion>
+        <cantidad>${prod.cantidad}</cantidad>
+      </producto>`).join('');
 
     const xmlString = `<?xml version="1.0" encoding="UTF-8"?>
     <productos>
       ${xmlProductos}
     </productos>`;
 
-    // Crear un Blob con el contenido del XML
     const blob = new Blob([xmlString], { type: 'application/xml' });
-
-    // Crear un enlace para descargar el archivo
     const enlace = document.createElement('a');
     enlace.href = URL.createObjectURL(blob);
-    enlace.download = 'productos.xml'; // Nombre del archivo a descargar
-    enlace.click(); // Hacer clic en el enlace para iniciar la descarga
+    enlace.download = 'productos.xml';
+    enlace.click();
   }
 }

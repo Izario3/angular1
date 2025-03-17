@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Producto } from '../models/producto';
-
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,6 +11,10 @@ export class CarritoService {
   }
   obtenerCarrito():Producto[]{
     return this.carrito;
+  }
+  
+  irAProductos(): void {
+    this.router.navigate(['/productos']);
   }
   generarXML(): string {
     const fechaActual = new Date().toISOString().split('T')[0];
@@ -92,5 +96,5 @@ export class CarritoService {
     this.carrito.splice(index, 1); // Elimina el producto del carrito
   }
   }
-  constructor() { }
+  constructor(private router: Router) {}
 }

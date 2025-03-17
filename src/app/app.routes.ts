@@ -5,5 +5,6 @@ import { InventarioComponent } from './components/inventario/inventario.componen
 export const routes: Routes = [    
     {path:'',component: ProductoComponent},
     {path:'carrito', component:CarritoComponent},
-    { path: 'inventario', component: InventarioComponent }
+    {path: 'inventario', component:InventarioComponent },
+    { path: 'producto', component: ProductoComponent }
 ];
