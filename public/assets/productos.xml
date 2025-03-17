@@ -1,27 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<productos>
-    <producto>
-        <id>1</id>
-        <nombre>Telefono</nombre>
-        <precio>600</precio>
-        <imagen>assets\th (1).jpg</imagen>
-        <descripcion>Telefono del año 2000.</descripcion>
-        <cantidad>5</cantidad>
-    </producto>
-    <producto>
-        <id>2</id>
-        <nombre>Tablet</nombre>
-        <precio>499</precio>
-        <imagen>assets\th (2).jpg</imagen>
-        <descripcion>Tablet de los años 2005</descripcion>
-        <cantidad>5</cantidad>
-    </producto>
-    <producto>
-        <id>3</id>
-        <nombre>Computadora</nombre>
-        <precio>459</precio>
-        <imagen>assets\th.jpg</imagen>
-        <descripcion>Computadora de ultima generación.</descripcion>
-        <cantidad>5</cantidad>
-    </producto>
-</productos>
+    <productos>
+      
+        <producto>
+          <id>1</id>
+          <nombre>[object HTMLInputElement]</nombre>
+          <precio>NaN</precio>
+          <cantidad>undefined</cantidad>
+          <imagen>https://ethic.es/wp-content/uploads/2023/03/imagen-1280x768.jpg</imagen>
+          <descripcion></descripcion>
+        </producto>
+        <producto>
+          <id>2</id>
+          <nombre>Tablet</nombre>
+          <precio>499</precio>
+          <cantidad>2</cantidad>
+          <imagen></imagen>
+          <descripcion>assets\th (2).jpg</descripcion>
+        </producto>
+        <producto>
+          <id>3</id>
+          <nombre>Computadora</nombre>
+          <precio>459</precio>
+          <cantidad>23</cantidad>
+          <imagen>assets\th.jpg</imagen>
+          <descripcion>aasd</descripcion>
+        </producto>
+        <producto>
+          <id>4</id>
+          <nombre>ewqeq</nombre>
+          <precio>234</precio>
+          <cantidad>234</cantidad>
+          <imagen>https://ethic.es/wp-content/uploads/2023/03/imagen-1280x768.jpg</imagen>
+          <descripcion></descripcion>
+        </producto>
+        <producto>
+          <id>5</id>
+          <nombre>aasdad</nombre>
+          <precio>234234</precio>
+          <cantidad>undefined</cantidad>
+          <imagen>https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png</imagen>
+          <descripcion></descripcion>
+        </producto>
+    </productos>

@@ -1,104 +1,113 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { InventarioService } from '../../services/inventario.service';
-interface Producto {
-  id: number;
-  nombre: string;
-  precio: number;
-  imagen: string;
-  descripcion: string;
-  cantidad: number;
-}
+import { Producto } from '../../models/producto';
+import { ProductoService } from '../../services/producto.service';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-inventario',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './inventario.component.html',
-  styleUrls: ['./inventario.component.css']
+  styleUrl: './inventario.component.css'
 })
 export class InventarioComponent implements OnInit {
-  productos: Producto[] = [];
-  productoEditando: Producto | null = null;
+  productos: Producto[] = []; // Lista de productos
+  productoEditando: Producto | null = null; // Producto que se está editando
+  imagenUrl: string = ''; // Variable para almacenar la URL de la imagen
+
+  agregar = false; // Para mostrar u ocultar el formulario de agregar
+  modificar = false; // Para mostrar u ocultar el formulario de modificar
+
+  constructor(
+    private productoService: ProductoService,
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
-    this.cargarInventarioInicial();
-  }
-  constructor(private router: Router) {} // Inyectar el router correctamente
-
-  irAProductos() {
-    this.router.navigate(['/producto']); // Asegúrate de que '/productos' es una ruta válida
-  }
-
-cargarInventarioInicial() {
-  fetch('assets/productos.xml') // Ruta corregida
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Error HTTP: ${response.status}`);
+    this.productoService.obtenerProductos().subscribe(
+      productos => {
+        this.productos = productos;
+      },
+      error => {
+        console.error('Error al obtener productos:', error);
       }
-      return response.text();
-    })
-    .then(data => {
-      console.log('XML Cargado:', data); // Para depuración
-      this.procesarXML(data);
-    })
-    .catch(error => console.error('Error cargando el XML inicial:', error));
-}
-
-  importarXML(event: any) {
-    const archivo = event.target.files[0];
-    if (!archivo) return;
-
-    const lector = new FileReader();
-    lector.onload = (e: any) => {
-      const xmlString = e.target.result;
-      this.procesarXML(xmlString);
-    };
-    lector.readAsText(archivo);
+    );
   }
 
-  procesarXML(xmlString: string) {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
-    this.productos = Array.from(xmlDoc.getElementsByTagName('producto')).map(prod => ({
-      id: Number(prod.getElementsByTagName('id')[0].textContent),
-      nombre: prod.getElementsByTagName('nombre')[0].textContent || '',
-      precio: Number(prod.getElementsByTagName('precio')[0].textContent),
-      imagen: prod.getElementsByTagName('imagen')[0]?.textContent || '',
-      descripcion: prod.getElementsByTagName('descripcion')[0]?.textContent || '',
-      cantidad: Number(prod.getElementsByTagName('cantidad')[0]?.textContent || '0')
-    }));
+  volver() {
+    this.router.navigate(['']);
   }
 
-  agregarProducto(nombre: string, precio: string, imagen: string, descripcion: string, cantidad: string) {
+  agregarFormulario() {
+    this.agregar = !this.agregar;
+    this.modificar = false;
+  }
+
+  modificarFormulario() {
+    this.modificar = !this.modificar;
+    this.agregar = false;
+  }
+
+  agregarProducto(nombre: string, precio: number, cantidad: number, imagenUrl: string, descripcion: string) {
     const nuevoProducto: Producto = {
       id: this.productos.length + 1,
       nombre,
-      precio: parseFloat(precio),
-      imagen,
-      descripcion,
-      cantidad: parseInt(cantidad)
+      precio,
+      cantidad,
+      imagen: imagenUrl, // Asignar URL de imagen
+      descripcion
     };
 
     this.productos.push(nuevoProducto);
     this.generarXML();
   }
 
-  editarProducto(producto: Producto) {
-    this.productoEditando = { ...producto };
+  modificarProducto(nombre: string, precio: number, cantidad: number, imagenUrl: string, descripcion:string) {
+    if (this.productoEditando) {
+      this.productoEditando.nombre = nombre;
+      this.productoEditando.precio = precio;
+      this.productoEditando.cantidad = cantidad;
+      this.productoEditando.imagen = imagenUrl;
+      this.productoEditando.descripcion = descripcion;
+      const index = this.productos.findIndex(p => p.id === this.productoEditando!.id);
+      if (index !== -1) {
+        this.productos[index] = { ...this.productoEditando };
+      }
+
+      this.productoEditando = null;
+      this.modificar = false; // Cerrar el formulario de modificación
+      this.generarXML();
+    }
   }
 
-  guardarEdicion() {
-    if (this.productoEditando) {
-      const index = this.productos.findIndex(p => p.id === this.productoEditando?.id);
-      if (index !== -1) {
-        this.productos[index] = this.productoEditando;
-      }
-      this.generarXML();
-      this.productoEditando = null;
-    }
+  generarXML() {
+    const xmlProductos = this.productos.map(prod => {
+      return `
+        <producto>
+          <id>${prod.id}</id>
+          <nombre>${prod.nombre}</nombre>
+          <precio>${prod.precio}</precio>
+          <cantidad>${prod.cantidad}</cantidad>
+          <imagen>${prod.imagen}</imagen>
+          <descripcion>${prod.descripcion || ""}</descripcion>
+        </producto>`;
+    }).join('');
+
+    const xmlString = `<?xml version="1.0" encoding="UTF-8"?>
+    <productos>
+      ${xmlProductos}
+    </productos>`;
+
+    this.http.post('http://localhost:3000/guardar-xml', { xml: xmlString })
+      .subscribe(
+        response => console.log("✅ XML guardado correctamente:", response),
+        error => console.error("❌ Error al guardar XML:", error)
+      );
   }
 
   eliminarProducto(id: number) {
@@ -106,26 +115,8 @@ cargarInventarioInicial() {
     this.generarXML();
   }
 
-  generarXML() {
-    const xmlProductos = this.productos.map(prod => `
-      <producto>
-        <id>${prod.id}</id>
-        <nombre>${prod.nombre}</nombre>
-        <precio>${prod.precio}</precio>
-        <imagen>${prod.imagen}</imagen>
-        <descripcion>${prod.descripcion}</descripcion>
-        <cantidad>${prod.cantidad}</cantidad>
-      </producto>`).join('');
-
-    const xmlString = `<?xml version="1.0" encoding="UTF-8"?>
-    <productos>
-      ${xmlProductos}
-    </productos>`;
-
-    const blob = new Blob([xmlString], { type: 'application/xml' });
-    const enlace = document.createElement('a');
-    enlace.href = URL.createObjectURL(blob);
-    enlace.download = 'productos.xml';
-    enlace.click();
+  editarProducto(id: number, nombre: string, precio: number, cantidad: number, imagen: string, descripcion: string) {
+    this.productoEditando = { id, nombre, precio, cantidad, imagen, descripcion };
+    this.modificar = true; // Mostrar el formulario de modificar
   }
 }

@@ -1,0 +1,155 @@
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+}
+
+/* Estilos para el encabezado */
+h1 {
+    color: #802e37;
+    margin-top: 20px;
+    font-size: 28px;
+    text-align: center;
+}
+
+/* Estilos de las acciones (botones) */
+.acciones button {
+    background-color: #802e37;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.acciones button:hover {
+    background-color: #a03c47;
+    transform: scale(1.05);
+}
+
+.acciones i {
+    font-size: 20px;
+}
+
+/* Formulario */
+.formulario {
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.formulario input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border 0.3s;
+}
+
+.formulario input:focus {
+    border-color: #802e37;
+    outline: none;
+}
+
+.formulario button {
+    background-color: #802e37;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.formulario button:hover {
+    background-color: #a03c47;
+    transform: scale(1.05);
+}
+
+/* Estilo para la lista de productos */
+.productos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.producto {
+    background-color: white;
+    width: 220px;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.producto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.producto img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.producto h3 {
+    color: #802e37;
+    font-size: 18px;
+    margin-top: 12px;
+}
+
+.producto p {
+    font-size: 14px;
+    color: #777;
+}
+
+.producto .acciones {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Estilo para el botón "volver" */
+.casa {
+    margin-top: 30px;
+}
+
+.casa button {
+    background-color: #802e37;
+    border: none;
+    padding: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.casa button:hover {
+    background-color: #979797;
+    transform: scale(1.1);
+}
+
+.casa i {
+    font-size: 28px;
+    color: white;
+}
