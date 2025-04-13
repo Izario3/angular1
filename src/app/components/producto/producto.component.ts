@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-producto',
   standalone:true,
-  imports: [CommonModule],
+  imports: [CommonModule, HttpClientModule],
   templateUrl: './producto.component.html',
   styleUrl: './producto.component.css'
 })
@@ -19,15 +19,13 @@ import { HttpClientModule } from '@angular/common/http';
 export class ProductoComponent implements OnInit{
  productos:any[]=[];
 constructor(
-  private productoService:ProductoService,
-  private carritoService:CarritoService,
-  private router:Router
+  private productoService: ProductoService,
+  private carritoService: CarritoService,
+  private router: Router
 ){}
 ngOnInit(): void {
-  this.productoService.obtenerProductos().subscribe(productos => {
-    this.productos = productos;
-  }, error => {
-    console.error('Error al obtener productos:', error);
+  this.productoService.obtenerProductos().subscribe(data => {
+    this.productos = data as any[];
   });
 }
 

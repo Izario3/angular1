@@ -9,7 +9,13 @@ import { map } from 'rxjs/operators';
 })
 export class ProductoService {
 
-  private xmlUrl = 'assets/productos.xml';
+  private apiURL='http://localhost:3000/api/productos';
+
+  constructor(private http: HttpClient){}
+    obtenerProductos(){
+      return this.http.get(this.apiURL);
+    }
+  /*private xmlUrl = 'assets/productos.xml';
 
   constructor(private http: HttpClient) {}
 
@@ -29,5 +35,5 @@ export class ProductoService {
         return productos;
       })
     );
-  }
+  }*/
 }

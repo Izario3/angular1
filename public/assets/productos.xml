@@ -14,8 +14,8 @@
           <nombre>Tablet</nombre>
           <precio>499</precio>
           <cantidad>2</cantidad>
-          <imagen></imagen>
-          <descripcion>assets\th (2).jpg</descripcion>
+          <imagen>assets\th (2).jpg</imagen>
+          <descripcion>tableta</descripcion>
         </producto>
         <producto>
           <id>3</id>
@@ -40,5 +40,13 @@
           <cantidad>undefined</cantidad>
           <imagen>https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png</imagen>
           <descripcion></descripcion>
+        </producto>
+        <producto>
+          <id>6</id>
+          <nombre>plaayera blanca</nombre>
+          <precio>600</precio>
+          <cantidad>8</cantidad>
+          <imagen>https://m.media-amazon.com/images/I/41QwY+qZGIL._AC_SX679_.jpg</imagen>
+          <descripcion>bla</descripcion>
         </producto>
     </productos>
