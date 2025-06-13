@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "mi-proyecto": {
+    "ModelA": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/mi-proyecto",
+            "outputPath": "dist/model-a",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "mi-proyecto:build:production"
+              "buildTarget": "ModelA:build:production"
             },
             "development": {
-              "buildTarget": "mi-proyecto:build:development"
+              "buildTarget": "ModelA:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -99,6 +99,6 @@
     }
   },
   "cli": {
-    "analytics": "5c83b840-552c-41e7-8c91-112e06c7bf56"
+    "analytics": "a820adc0-748f-4df3-a1e1-f2d1ca10d657"
   }
 }
